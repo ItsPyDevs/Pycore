@@ -10,8 +10,9 @@ execute: `python main.py`
 If you have any error or bug open a issue on this project
 
 ##CREATOR
+this project took us like 80 hours to do so please star this repo (ItsPyDevs x Crafterhide_dev)
 [ItsPyDevs](https://github.com/ItsPyDevs)
-[.](https://github.com/)
+
 
 #MIT English version:
 Copyright © 2023 ItsPyDevs (https://github.com/ItsPyDevs)
