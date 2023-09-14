@@ -48,7 +48,7 @@ HORS OU EN RELATION AVEC LE LOGICIEL OU L'UTILISATION OU D'AUTRES AFFAIRES DANS 
 import sys
 import threading
 import os
-from tkinter import (DISABLED, LabelFrame, Tk, Label, Text, messagebox, Toplevel, Entry, Button, END, Menu, LEFT, RIGHT, Frame, X, Y, BOTTOM)
+from tkinter import (LabelFrame, Tk, Label, Text, messagebox, Toplevel, Entry, Button, END, Menu, LEFT, RIGHT, Frame, X, Y, BOTTOM)
 
 dark_mode = True #Change if you want Default Dark mod or white mode at start (Value accepted: True/False)
 
@@ -82,11 +82,7 @@ def execute_code_in_thread(code):
 
 def exit_application():
     if messagebox.askyesno("Confirm", "Do you really want to exit the application?"): root.destroy()
-def install_module():
-    module_name = module_entry.get()
-    if module_name:
-        module_console.delete("1.0", END)
-        run(f"pip install {module_name}", module_console)
+
 
 def run(command, text_widget):
     try:
@@ -123,8 +119,6 @@ def setTheme(dark_mode):
     widget = []
     widget.append(code_editor)
     widget.append(console)
-    widget.append(module_console)
-    widget.append(module_entry)
     for i in widget:
         i.config(bg=theme_color['bg'], fg=theme_color['fg'])
         if isinstance(i, Entry) or isinstance(i, Text):
@@ -135,7 +129,7 @@ def popup():
     def apply_color():
         color_code = entry.get()
         if len(color_code) == 7 and color_code[0] == "#" and all(c in "0123456789abcdefABCDEF" for c in color_code[1:]):
-            for button in [run_button, quit_button, dark_mode_button, install_button, configuration_button]:
+            for button in [run_button, quit_button, dark_mode_button, configuration_button]:
                 button.config(bg=color_code)
             popup.destroy()
         else: error_label.config(text="Invalid HEX color code")
@@ -149,17 +143,14 @@ code_menu = Menu(menu_bar, tearoff=0) ; code_menu.add_command(label="Run", comma
 code_frame = LabelFrame(root, text="Code Editor", labelanchor="n") ; code_frame.pack(side=LEFT, padx=10, pady=10, fill=Y) ; console_frame = LabelFrame(root, text="Console", labelanchor="n") ; console_frame.pack(side=RIGHT, padx=10, pady=10, fill=Y)
 module_frame = LabelFrame(root, text="Module Console", labelanchor="n") ; module_frame.pack(side=BOTTOM, padx=10, pady=10, fill=X)
 code_editor = Text(code_frame, height=15, width=40, wrap=None) ; code_editor.pack(fill=X, padx=10, pady=5)
-console = Text(console_frame, height=15, width=40) ; console.pack(fill=X, padx=10, pady=5) ; console.config(state=DISABLED)
-module_console = Text(module_frame, height=8, width=40) ; module_console.pack(fill=X, padx=10, pady=5) ; module_console.config(state=DISABLED)
+console = Text(console_frame, height=15, width=40) ; console.pack(fill=X, padx=10, pady=5)
 
-button_frame = Frame(root) ; button_frame.pack(side=LEFT, fill=Y, padx=10, pady=10)
-run_button = Button(button_frame, text="Run", command=execute_code) ; run_button.pack(fill=X, padx=10, pady=5)
-quit_button = Button(button_frame, text="Quit", command=exit_application) ; quit_button.pack(fill=X, padx=10, pady=5)
-dark_mode_button = Button(root, text="Toggle Dark Mode", command=toggle_dark_mode) ; dark_mode_button.pack(padx=10, pady=5)
-configuration_button = Button(root, text="Set Button Color", command=popup) ; configuration_button.pack(padx=10, pady=5)
-module_label = Label(module_frame, text="Install a module:") ; module_label.pack(side=LEFT)
-module_entry = Entry(module_frame) ; module_entry.pack(side=LEFT, padx=5)
-install_button = Button(module_frame, text="Install", command=install_module) ; install_button.pack(side=LEFT)
+button_frame = Frame(root) ; button_frame.pack(side=LEFT, fill=Y)
+
+run_button = Button(button_frame, text="Run", command=execute_code) ; run_button.pack(fill=X,padx=3, side=LEFT)
+quit_button = Button(button_frame, text="Quit", command=exit_application) ; quit_button.pack(fill=X, side=LEFT,padx=3)
+dark_mode_button = Button(root, text="Toggle Dark Mode", command=toggle_dark_mode) ; dark_mode_button.pack(side=LEFT,padx=3)
+configuration_button = Button(root, text="Set Button Color", command=popup) ; configuration_button.pack(side=LEFT,padx=3)
 
 console.bind("<Key>", lambda e: "break")
 
